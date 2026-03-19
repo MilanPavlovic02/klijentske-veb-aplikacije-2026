@@ -1,15 +1,99 @@
-<ul>
-    @for (t of toys(); track $index) {
-        <li>
-            <h3>{{t.name}}</h3>
-            <ul>
-                <li>ID: <strong> {{t.toyId}}</strong></li>
-                <li>Description: <strong> {{t.description}}</strong></li>
-                <li>Price: <strong> {{t.price}}</strong></li>
-            </ul>
+<div class="home-container">
+  <div class="filters">
+    <h3 class="filter-title">Pretraga</h3>
 
-        </li>
-    }
+    <mat-form-field appearance="outline">
+      <mat-label>Tip</mat-label>
+      <mat-select (selectionChange)="setType($event)">
+        <mat-option value="">Svi</mat-option>
+        <mat-option value="Slagalica">Slagalica</mat-option>
+        <mat-option value="Slikovnica">Slikovnica</mat-option>
+        <mat-option value="Figura">Figura</mat-option>
+        <mat-option value="Vozilo">Vozilo</mat-option>
+        <mat-option value="Plišana igračka">Plišana</mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <mat-form-field appearance="outline">
+      <mat-label>Uzrast</mat-label>
+      <mat-select (selectionChange)="setAge($event)">
+        <mat-option value="">Svi</mat-option>
+        <mat-option value="3-5">3-5</mat-option>
+        <mat-option value="6-9">6-9</mat-option>
+        <mat-option value="10+">10+</mat-option>
+      </mat-select>
+    </mat-form-field>
 
-</ul>
+    <mat-form-field appearance="outline">
+      <mat-label>Grupa</mat-label>
+      <mat-select (selectionChange)="setGroup($event)">
+        <mat-option value="">Svi</mat-option>
+        <mat-option value="dečak">Dečaci</mat-option>
+        <mat-option value="devojčica">Devojčice</mat-option>
+      </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="outline">
+      <mat-label>Sortiraj po oceni</mat-label>
+      <mat-select (selectionChange)="setSort($event)">
+        <mat-option value="">Bez sortiranja</mat-option>
+        <mat-option value="desc">Najbolje ocenjeni</mat-option>
+        <mat-option value="asc">Najlošije ocenjeni</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+
+  @if (toys().length > 0) {
+  <div class="products">
+    <div class="card-wrapper">
+      @for (t of paginatedToys(); track $index) {
+
+      <mat-card class="toys-card" appearance="outlined">
+        <img mat-card-image [src]="utils.getImageUrl(t) " [alt]="t.name" />
+
+        <mat-card-content class="card-content">
+          <mat-card-title>
+            <strong>{{t.name}}</strong>
+          </mat-card-title>
+
+          <div class="rating-display">
+            <mat-icon
+              fontIcon="star_rate"
+              *ngFor="let i of [1,2,3,4,5]"
+              [class.filled]="getRating(t.toyId) >= i"
+            >
+              Ocena</mat-icon
+            >
+            <span class="rating-num"
+              >({{ getRating(t.toyId).toFixed(1) }})</span
+            >
+          </div>
+
+          <mat-card-subtitle> Cena: {{t.price}} RSD </mat-card-subtitle>
+        </mat-card-content>
+
+        <mat-card-actions>
+          <a [routerLink]="`/details/${t.toyId}`" matButton>
+            <mat-icon fontIcon="description"></mat-icon>
+            Detalji</a
+          >
+          @if (authService.getActiveUser()) {
+          <button matButton (click)="addToCart(t)">
+            <mat-icon fontIcon="add_shopping_cart"></mat-icon>
+            Poruci
+          </button>
+          }
+        </mat-card-actions>
+      </mat-card>
+      }
+    </div>
+    <div class="pagination">
+      <button mat-raised-button color="primary" (click)="prevPage()">◀</button>
+      <span>Strana {{ currentPage }}</span>
+      <button mat-raised-button color="primary" (click)="nextPage()">▶</button>
+    </div>
+  </div>
+  } @else {
+  <app-loading />
+  }
+</div>

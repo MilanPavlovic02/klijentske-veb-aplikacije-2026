@@ -1,0 +1,27 @@
+<mat-card class="login-card">
+  <mat-card-header>
+    <h1>Login</h1>
+  </mat-card-header>
+  <mat-card-content>
+    <div>
+      <mat-form-field class="full-width">
+        <mat-label>Email</mat-label>
+        <input matInput type="email" [(ngModel)]="email" />
+      </mat-form-field>
+      <mat-form-field class="full-width">
+        <mat-label>Password</mat-label>
+        <input matInput type="password" [(ngModel)]="password" />
+      </mat-form-field>
+    </div>
+  </mat-card-content>
+  <mat-card-actions>
+    <button type="button" matButton (click)="doLogin()">
+      <mat-icon fontIcon="login"></mat-icon>Submit
+    </button>
+  </mat-card-actions>
+
+  <div style="padding: 10px; text-align: center">
+    <span>Napravite nalog. </span>
+    <a routerLink="/registration" matButton color="accent">Registrujse</a>
+  </div>
+</mat-card>

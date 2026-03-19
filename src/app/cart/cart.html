@@ -1,0 +1,69 @@
+<div class="cart-container">
+  <h1 class="main-title">Vaša korpa</h1>
+
+  @if (cartItems().length > 0) {
+  <div class="cart-layout">
+    <div class="cart-items-section">
+      @for (item of cartItems(); track item.toyId) {
+      <mat-card class="cart-item-card">
+        <div class="card-body">
+          <img [src]="utils.getImageUrl(item)" class="item-img" />
+
+          <div class="item-details">
+            <h3 class="item-name">{{ item.name }}</h3>
+            <p class="item-price">{{ item.price }} RSD</p>
+          </div>
+
+          <div class="qty-actions">
+            <button mat-icon-button (click)="decrease(item)">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+            <span class="qty-text">{{ item.quantity }}</span>
+            <button mat-icon-button (click)="increase(item)">
+              <mat-icon>add_circle_outline</mat-icon>
+            </button>
+          </div>
+
+          <button mat-icon-button color="warn" (click)="remove(item)">
+            <mat-icon>delete_outline</mat-icon>
+          </button>
+        </div>
+      </mat-card>
+      }
+    </div>
+
+    <div class="summary-section">
+      <mat-card class="summary-card">
+        <h3>Pregled porudžbine</h3>
+        <div class="summary-line">
+          <span>Broj artikala:</span>
+          <span>{{ cartItems().length }}</span>
+        </div>
+        <div class="summary-line total">
+          <span>Ukupno za uplatu:</span>
+          <span>{{ totalPrice() }} RSD</span>
+        </div>
+        <button
+          mat-raised-button
+          color="primary"
+          class="checkout-btn"
+          (click)="checkout()"
+        >
+          <mat-icon>shopping_bag</mat-icon> NARUČI
+        </button>
+        <button mat-button routerLink="/" class="back-btn">
+          Nastavi kupovinu
+        </button>
+      </mat-card>
+    </div>
+  </div>
+  } @else {
+  <div class="empty-state">
+    <mat-icon class="large-icon">shopping_cart_off</mat-icon>
+    <p>Korpa je prazna 😢</p>
+    <button mat-stroked-button color="primary" routerLink="/">
+      Idi u prodavnicu
+    </button>
+  </div>
+  }
+</div>

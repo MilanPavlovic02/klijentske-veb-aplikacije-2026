@@ -1,0 +1,109 @@
+<div *ngIf="toys() as toy; else loadingBlock" class="details-container">
+  <div class="main-content-row">
+    <mat-card class="image-card">
+      <img [src]="utils.getImageUrl(toy)" class="details-img" />
+    </mat-card>
+
+    <mat-card class="info-card">
+      <mat-card-header>
+        <mat-card-title class="toy-title">{{toy.name}}</mat-card-title>
+      </mat-card-header>
+
+      <mat-card-content>
+        <mat-list>
+          <mat-list-item>
+            <mat-icon matListItemIcon>description</mat-icon>
+            <div matListItemTitle>Opis</div>
+            <div matListItemLine>{{toy.description}}</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>calendar_month</mat-icon>
+            <div matListItemTitle>Uzrast</div>
+            <div matListItemLine>{{toy.ageGroup.name}} god.</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>group</mat-icon>
+            <div matListItemTitle>Ciljana grupa</div>
+            <div matListItemLine>{{toy.targetGroup}}</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>group</mat-icon>
+            <div matListItemTitle>Tip igracke</div>
+            <div matListItemLine>{{toy.type.name}}</div>
+          </mat-list-item>
+          <mat-list-item>
+            <mat-icon matListItemIcon>sell</mat-icon>
+            <div matListItemTitle>Cena</div>
+            <div matListItemLine>{{toy.price}} RSD</div>
+          </mat-list-item>
+        </mat-list>
+
+        <div class="order-actions" *ngIf="authService.getActiveUser()">
+          <div class="qty-selector">
+            <label>Količina:</label>
+            <input type="number" [(ngModel)]="quantity" min="1" />
+          </div>
+          <button mat-raised-button color="primary" (click)="orderToy()">
+            <mat-icon>add_shopping_cart</mat-icon> Dodaj u korpu
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <mat-card class="reviews-section">
+    <mat-card-header>
+      <mat-card-title>Recenzije korisnika</mat-card-title>
+    </mat-card-header>
+
+    <mat-card-content>
+      <div
+        class="add-review-box"
+        *ngIf="authService.getActiveUser(); else loginMsg"
+      >
+        <div class="rating-stars">
+          <span>Ocenite igračku:</span>
+          <mat-icon
+            *ngFor="let s of [1,2,3,4,5]"
+            (click)="selectedRating = s"
+            [class.active]="selectedRating >= s"
+            >star</mat-icon
+          >
+        </div>
+        <textarea
+          [(ngModel)]="newReview"
+          placeholder="Vaša recenzija..."
+        ></textarea>
+        <button mat-flat-button color="accent" (click)="addReview()">
+          Objavi
+        </button>
+      </div>
+
+      <ng-template #loginMsg>
+        <p class="login-info">Prijavite se da biste ostavili recenziju.</p>
+      </ng-template>
+
+      <mat-divider></mat-divider>
+
+      <div class="review-list">
+        <div *ngFor="let r of reviews" class="review-item">
+          <div class="review-header">
+            <strong>{{r.user}}</strong>
+            <div class="display-stars">
+              <mat-icon
+                *ngFor="let i of [1,2,3,4,5]"
+                [class.filled]="r.rating >= i"
+                >star</mat-icon
+              >
+            </div>
+          </div>
+          <p class="review-text">{{r.text}}</p>
+        </div>
+      </div>
+    </mat-card-content>
+  </mat-card>
+</div>
+
+<ng-template #loadingBlock>
+  <app-loading></app-loading>
+</ng-template>

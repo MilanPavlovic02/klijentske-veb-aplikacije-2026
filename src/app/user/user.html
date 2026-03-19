@@ -1,0 +1,86 @@
+<div class="user-wrapper">
+  <mat-card class="user-card">
+    <mat-card-header>
+      <mat-card-title>Detalji Korisnika</mat-card-title>
+    </mat-card-header>
+    <mat-card-content>
+      <div class="form-container">
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email</mat-label>
+          <mat-icon matPrefix>email</mat-icon>
+          <input matInput [(ngModel)]="activUser!.email" disabled />
+        </mat-form-field>
+
+        <div class="name-row">
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Ime</mat-label>
+            <mat-icon matPrefix>person</mat-icon>
+            <input matInput [(ngModel)]="activUser!.firstName" />
+          </mat-form-field>
+          <mat-form-field appearance="outline" class="half-width">
+            <mat-label>Prezime</mat-label>
+            <input matInput [(ngModel)]="activUser!.lastName" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Adresa</mat-label>
+          <mat-icon matPrefix>home</mat-icon>
+          <input matInput [(ngModel)]="activUser!.address" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Broj telefona</mat-label>
+          <mat-icon matPrefix>phone</mat-icon>
+          <input matInput [(ngModel)]="activUser!.phone" />
+        </mat-form-field>
+      </div>
+    </mat-card-content>
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="updateUser()">
+        <mat-icon>save</mat-icon> Sačuvaj izmene
+      </button>
+    </mat-card-actions>
+  </mat-card>
+
+  <div class="user-column">
+    <mat-card class="user-card info-card">
+      <mat-card-content>
+        <div class="user-header-info">
+          <img [src]="getAvatarUrl()" class="user-image" />
+          <div class="text-info">
+            <h2>{{activUser!.firstName}} {{activUser!.lastName}}</h2>
+            <p>{{activUser!.email}}</p>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="user-card">
+      <mat-card-header>
+        <mat-card-title>Sigurnost</mat-card-title>
+      </mat-card-header>
+      <mat-card-content>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Stara lozinka</mat-label>
+          <mat-icon matPrefix>lock_open</mat-icon>
+          <input matInput type="password" [(ngModel)]="oldPassword" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Nova lozinka</mat-label>
+          <mat-icon matPrefix>vpn_key</mat-icon>
+          <input matInput type="password" [(ngModel)]="newPassword" />
+        </mat-form-field>
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Ponovite lozinku</mat-label>
+          <input matInput type="password" [(ngModel)]="passwordRepeat" />
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions align="end">
+        <button mat-stroked-button color="warn" (click)="updatePassword()">
+          <mat-icon>password</mat-icon> Promeni lozinku
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>
